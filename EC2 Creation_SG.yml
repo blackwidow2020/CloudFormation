@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources: 
+  DevEC2Instance: 
+    Type: 'AWS::EC2::Instance'
+    Properties: 
+      ImageId: ami-044c46b1952ad5861
+      InstanceType: t2.micro
+      KeyName: sydney
+      SecurityGroups: 
+        - default

@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Parameter to KeyName
+
+Parameters:
+  KeyName:
+    Description: Select Key for Instance
+    Type: AWS::EC2::KeyPair::KeyName
+  #AZ Parameter
+  MyAZ:
+    Description: Select AZ to launch EC2
+    Type: String
+    Default: ap-southeast-2a
+    AllowedValues:
+      - ap-southeast-2a
+      - ap-southeast-2b
+      - ap-southeast-2c
+
+Resources: 
+  EC2Instance: 
+    Type: 'AWS::EC2::Instance'
+    Properties: 
+      ImageId: ami-044c46b1952ad5861
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      AvailabilityZone: !Ref MyAZ
+      SecurityGroups: 
+        #- default
+        - !Ref ssh
+
+  ssh:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties: 
+      GroupDescription: To Allow Http
+      GroupName: Http_Access
+      SecurityGroupIngress:
+       - IpProtocol: tcp
+         CidrIp: 0.0.0.0/0
+         FromPort: 443
+         ToPort: 443
+       #Adding 8080 inbound Port  
+       - IpProtocol: tcp
+         CidrIp: 0.0.0.0/0
+         FromPort: 8080
+         ToPort: 8080
